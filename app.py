@@ -12,7 +12,7 @@ def mostrar_dashboard():
 
 Juegos_completados = sum(1 for data in progreso.values() if data["Hecho"])
 st.header("EcoAprende - Dashboard")
-st.write(f"Progreso general: {lecciones_completadas} / {total_lecciones}")
+st.write(f"Progreso general: {Juegos_completados} / {Juegos_totales}")
 
 st.subheader("Lecciones disponibles:")
           
