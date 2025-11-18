@@ -42,6 +42,9 @@ def juego_solar():
 
         st.success(f"Juego completado. Ganaste {puntaje} puntos.")
         st.balloons()
+        if st.button("Volver al Dashboard"):
+            st.session_state["pantalla"] = "dashboard"
+            st.rerun()
 
         if st.button("Volver al Dashboard"):
             st.session_state["pantalla"] = "dashboard"
