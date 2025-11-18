@@ -12,6 +12,8 @@ def mostrar_dashboard():
     """Pantalla Principal: Dashboard del Jugador."""
 
     Juegos_completados = sum(1 for data in progreso.values() if data["Hecho"])
+cols1 = st.columns(2)
+cols2 = st.columns(2)
 
     st.header("EcoAprende - Dashboard")
     st.write(f"Progreso general: {Juegos_completados} / {Juegos_totales} Juegos")
