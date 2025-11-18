@@ -3,55 +3,57 @@ import streamlit as st
 st.title("EcoAprende 🌱")
 
 # ---------------------------
-# PROGRESO DE LOS JUEGOS
+#      PROGRESO
 # ---------------------------
 progreso = {
-    "Solar": {"completado": False, "puntaje": 0},
-    "Eolica": {"completado": False, "puntaje": 0},
-    "Hidraulica": {"completado": False, "puntaje": 0},
-    "Biomasa": {"completado": False, "puntaje": 0},
+    "Solar": {"completado": False, "puntaje": 0}
 }
 
 # ---------------------------
-# DASHBOARD + JUEGOS
+#      INTERFAZ ÚNICA
 # ---------------------------
-st.header("🌱 EcoAprende - Juegos Educativos")
-st.subheader("Selecciona un juego para abrirlo:")
 
-# -------- JUEGO SOLAR --------
-with st.expander("🌞 Energía Solar"):
+st.subheader("Juegos disponibles")
+
+# Mostrar el botón del juego
+juego = "Solar"
+
+# Si está completado, mostrar ✔️
+estado = "✔️" if progreso[juego]["completado"] else ""
+
+if st.button(f"{juego} {estado}"):
+    st.session_state["mostrar_solar"] = not st.session_state.get("mostrar_solar", False)
+
+# ---------------------------
+#      CONTENIDO DEL JUEGO
+# ---------------------------
+if st.session_state.get("mostrar_solar", False):
+
+    st.header("🌞 Juego: Energía Solar")
     st.write("Responde las preguntas:")
 
     p1 = st.radio(
         "¿Qué energía solar genera electricidad?",
         ["Solar Térmica", "Solar Fotovoltaica", "Solar Geotérmica"],
-        key="p1_solar"
+        key="p1"
     )
 
     p2 = st.radio(
         "¿Cuál es el principal beneficio ambiental?",
         ["Genera pocos residuos", "Reduce CO2", "Funciona de noche"],
-        key="p2_solar"
+        key="p2"
     )
 
-    if st.button("Enviar respuestas ✔️", key="enviar_solar"):
-        puntaje = 0
+    if st.button("Enviar respuestas"):
 
+        puntaje = 0
         if p1 == "Solar Fotovoltaica":
             puntaje += 5
-
         if p2 == "Reduce CO2":
             puntaje += 5
 
         progreso["Solar"]["completado"] = True
         progreso["Solar"]["puntaje"] = puntaje
 
-        st.success(f"Juego completado. Ganaste {puntaje} puntos 🎉")
+        st.success(f"¡Completado! Puntaje: {puntaje} ⭐")
         st.balloons()
-
-# -------- JUEGOS BLOQUEADOS --------
-st.info("Los siguientes juegos estarán disponibles pronto:")
-
-st.button("💨 Energía Eólica (bloqueado)", disabled=True)
-st.button("💧 Energía Hidráulica (bloqueado)", disabled=True)
-st.button("🌿 Biomasa (bloqueado)", disabled=True)
