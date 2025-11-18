@@ -5,21 +5,30 @@ progreso = {
     "Solar": {"completado": False, "puntaje": 0},
     "Eolica": {"completado": False, "puntaje": 0},
     "Hidraulica": {"completado": False, "puntaje": 0},
-    "Biomasa": {"completado": False, "puntaje": 0},}
+    "Biomasa": {"completado": False, "puntaje": 0},
+}
+
 total_juegos = len(progreso)
+
+# --------------------------
+#     DASHBOARD
+# --------------------------
 def mostrar_dashboard():
     st.header("🌱 EcoAprende - Dashboard de Juegos")
     juegos_completados = sum(1 for data in progreso.values() if data["completado"])
     st.write(f"Progreso general: **{juegos_completados}/{total_juegos}** juegos completados")
-    st.subheader("Selecciona un juego:")
 
+    st.subheader("Selecciona un juego:")
     for juego in progreso.keys():
         if st.button(juego):
             st.session_state["pantalla"] = juego
-#Energia solar
+
+
+# --------------------------
+#     JUEGO SOLAR
+# --------------------------
 def juego_solar():
     st.title("🌞 Juego: Energía Solar")
-
     st.write("Responde las preguntas para ganar puntos:")
 
     p1 = st.radio(
@@ -42,13 +51,15 @@ def juego_solar():
 
         st.success(f"Juego completado. Ganaste {puntaje} puntos.")
         st.balloons()
-        if st.button("Volver al Dashboard"):
-            st.session_state["pantalla"] = "dashboard"
-            st.rerun()
 
         if st.button("Volver al Dashboard"):
             st.session_state["pantalla"] = "dashboard"
+            st.rerun()
 
+
+# --------------------------
+#   CONTROL DE PANTALLAS
+# --------------------------
 if "pantalla" not in st.session_state:
     st.session_state["pantalla"] = "dashboard"
 
@@ -57,26 +68,7 @@ if st.session_state["pantalla"] == "dashboard":
 
 elif st.session_state["pantalla"] == "Solar":
     juego_solar()
-progreso["Solar"]["completado"] = True
-progreso["Solar"]["puntaje"] = puntaje
 
-st.success(f"Juego completado. Ganaste {puntaje} puntos.")
-st.balloons()
-
-# Botón para regresar al dashboard (solo una vez)
-if st.button("Volver al Dashboard"):
-    st.session_state["pantalla"] = "dashboard"
-    st.rerun()
-
-# Control de pantallas
-if "pantalla" not in st.session_state:
-    st.session_state["pantalla"] = "dashboard"
-
-if st.session_state["pantalla"] == "dashboard":
-    mostrar_dashboard()
-
-elif st.session_state["pantalla"] == "Solar":
-    juego_solar()
 
 
 
