@@ -1,4 +1,4 @@
-import streamlit as st
+mport streamlit as st
 
 st.set_page_config(
     page_title="EcoAprende",
@@ -24,9 +24,15 @@ def mostrar_dashboard():
     st.subheader("Selecciona un juego:")
 
     for juego, data in progreso.items():
-        nombre_mostrar = f"{juego} {'✔️' if data['completado'] else ''}"
-        if st.button(nombre_mostrar):
-            st.session_state["pantalla"] = juego
+        nombre = f"{juego} {'✔️' if data['completado'] else ''}"
+
+        # SOLO Solar está habilitado
+        if juego == "Solar":
+            if st.button(nombre, use_container_width=True):
+                st.session_state["pantalla"] = juego
+                st.rerun()
+        else:
+            st.button(nombre, disabled=True, use_container_width=True)
 
 # ---------------------------
 #     JUEGO: SOLAR
@@ -44,7 +50,7 @@ def juego_solar():
         ["Genera pocos residuos", "Reduce CO2", "Funciona de noche"]
     )
 
-    if st.button("Enviar respuestas"):
+    if st.button("Enviar respuestas ✔️"):
         puntaje = 0
         if p1 == "Solar Fotovoltaica":
             puntaje += 5
@@ -57,8 +63,12 @@ def juego_solar():
         st.success(f"Juego completado. Ganaste {puntaje} puntos.")
         st.balloons()
 
-        if st.button("Volver al Dashboard"):
-            st.session_state["pantalla"] = "dashboard"
+        st.session_state["pantalla"] = "dashboard"
+        st.rerun()
+
+    if st.button("⬅️ Volver al Dashboard"):
+        st.session_state["pantalla"] = "dashboard"
+        st.rerun()
 
 # ---------------------------
 #      MANEJO DE PANTALLAS
@@ -66,8 +76,10 @@ def juego_solar():
 if "pantalla" not in st.session_state:
     st.session_state["pantalla"] = "dashboard"
 
-if st.session_state["pantalla"] == "dashboard":
+pantalla = st.session_state["pantalla"]
+
+if pantalla == "dashboard":
     mostrar_dashboard()
-elif st.session_state["pantalla"] == "Solar":
+elif pantalla == "Solar":
     juego_solar()
 
