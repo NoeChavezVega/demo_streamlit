@@ -1,9 +1,14 @@
 import streamlit as st
-st.title("EcoAprende 🌱")
 
-# ---------------------------------------------------
-# PROGRESO
-# ---------------------------------------------------
+st.set_page_config(
+    page_title="EcoAprende",
+    page_icon="🌱",
+    layout="wide"
+)
+
+# ---------------------------
+#      PROGRESO
+# ---------------------------
 progreso = {
     "Solar": {"completado": False, "puntaje": 0},
     "Eolica": {"completado": False, "puntaje": 0},
@@ -13,10 +18,9 @@ progreso = {
 
 total_juegos = len(progreso)
 
-
-# ---------------------------------------------------
-# DASHBOARD
-# ---------------------------------------------------
+# ---------------------------
+#      DASHBOARD SIMPLE
+# ---------------------------
 def mostrar_dashboard():
     st.header("🌱 EcoAprende - Dashboard de Juegos")
 
@@ -26,48 +30,28 @@ def mostrar_dashboard():
     st.subheader("Selecciona un juego:")
 
     for juego in progreso.keys():
-        if st.button(juego, key=f"boton_{juego}"):
+        if st.button(juego):
             st.session_state["pantalla"] = juego
-            st.rerun()
 
-
-# ---------------------------------------------------
-# JUEGO SOLAR
-# ---------------------------------------------------
+# ---------------------------
+#     JUEGO: SOLAR
+# ---------------------------
 def juego_solar():
     st.title("🌞 Juego: Energía Solar")
 
-    # ----- Si el juego ya terminó, NO mostrar preguntas -----
-    if st.session_state.get("solar_terminado", False):
-
-        puntaje = st.session_state["puntaje_solar"]
-
-        st.success(f"Juego completado. Ganaste {puntaje} puntos.")
-        st.balloons()
-
-        if st.button("Volver al Dashboard", key="volver_solar"):
-            st.session_state["pantalla"] = "dashboard"
-            st.rerun()
-
-        return  # ← evitar que se muestren preguntas
-
-    # -------- PREGUNTAS DEL JUEGO (solo si no está terminado) --------
     st.write("Responde las preguntas para ganar puntos:")
 
     p1 = st.radio(
         "¿Qué energía solar genera electricidad?",
-        ["Solar Térmica", "Solar Fotovoltaica", "Solar Geotérmica"],
-        key="solar_p1"
+        ["Solar Térmica", "Solar Fotovoltaica", "Solar Geotérmica"]
     )
 
     p2 = st.radio(
         "¿Cuál es el principal beneficio ambiental?",
-        ["Genera pocos residuos", "Reduce CO2", "Funciona de noche"],
-        key="solar_p2"
+        ["Genera pocos residuos", "Reduce CO2", "Funciona de noche"]
     )
 
-    # Cuando envía respuestas
-    if st.button("Enviar respuestas", key="enviar_solar"):
+    if st.button("Enviar respuestas"):
         puntaje = 0
         if p1 == "Solar Fotovoltaica":
             puntaje += 5
@@ -77,25 +61,20 @@ def juego_solar():
         progreso["Solar"]["completado"] = True
         progreso["Solar"]["puntaje"] = puntaje
 
-        st.session_state["puntaje_solar"] = puntaje
-        st.session_state["solar_terminado"] = True  # ← MARCAMOS EL JUEGO COMO TERMINADO
+        st.success(f"Juego completado. Ganaste {puntaje} puntos.")
+        st.balloons()
 
-        st.rerun()
+        if st.button("Volver al Dashboard"):
+            st.session_state["pantalla"] = "dashboard"
 
-
-# ---------------------------------------------------
-# CONTROL DE PANTALLAS
-# ---------------------------------------------------
+# ---------------------------
+#      MANEJO DE PANTALLAS
+# ---------------------------
 if "pantalla" not in st.session_state:
     st.session_state["pantalla"] = "dashboard"
 
 if st.session_state["pantalla"] == "dashboard":
     mostrar_dashboard()
+
 elif st.session_state["pantalla"] == "Solar":
     juego_solar()
-
-
-
-
-
-
