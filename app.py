@@ -1,31 +1,73 @@
 import streamlit as st
-st.title("⚡EcoAprende🌱")
-progreso = {
-    "Energia Solar": {"Hecho": False, "Puntaje": 0},
-    "Energia Eolica": {"Hecho": False, "Puntaje": 0},
-    "Energia Hidraulica": {"Hecho": False, "Puntaje": 0},
-    "Energia por Biomasa": {"Hecho": False, "Puntaje": 0},}
 
-Juegos_totales = len(progreso)
+st.set_page_config(
+    page_title="EcoAprende",
+    page_icon="🌱",
+    layout="wide"
+)
+
+progreso = {
+    "Solar": {"completado": False, "puntaje": 0},
+    "Eolica": {"completado": False, "puntaje": 0},
+    "Hidraulica": {"completado": False, "puntaje": 0},
+    "Biomasa": {"completado": False, "puntaje": 0},
+}
+
+total_juegos = len(progreso)
 
 def mostrar_dashboard():
-    """Pantalla Principal: Dashboard del Jugador."""
+    st.header("🌱 EcoAprende - Dashboard de Juegos")
 
-    Juegos_completados = sum(1 for data in progreso.values() if data["Hecho"])
-    cols1 = st.columns(2)
-    cols2 = st.columns(2)
+    juegos_completados = sum(1 for data in progreso.values() if data["completado"])
+    st.write(f"Progreso general: **{juegos_completados}/{total_juegos}** juegos completados")
 
-
-
-
-    st.header("EcoAprende - Dashboard")
-    st.write(f"Progreso general: {Juegos_completados} / {Juegos_totales} Juegos")
-
-    st.subheader("Juegos disponibles:")
+    st.subheader("Selecciona un juego:")
 
     for juego in progreso.keys():
         if st.button(juego):
-            st.session_state["pantalla_actual"] = juego
+            st.session_state["pantalla"] = juego
+
+#Energia solar
+def juego_solar():
+    st.title("🌞 Juego: Energía Solar")
+
+    st.write("Responde las preguntas para ganar puntos:")
+
+    p1 = st.radio(
+        "¿Qué energía solar genera electricidad?",
+        ["Solar Térmica", "Solar Fotovoltaica", "Solar Geotérmica"]
+    )
+
+    p2 = st.radio(
+        "¿Cuál es el principal beneficio ambiental?",
+        ["Genera pocos residuos", "Reduce CO2", "Funciona de noche"]
+    )
+
+    if st.button("Enviar respuestas"):
+        puntaje = 0
+        if p1 == "Solar Fotovoltaica":
+            puntaje += 5
+        if p2 == "Reduce CO2":
+            puntaje += 5
+
+        progreso["Solar"]["completado"] = True
+        progreso["Solar"]["puntaje"] = puntaje
+
+        st.success(f"Juego completado. Ganaste {puntaje} puntos.")
+        st.balloons()
+
+        if st.button("Volver al Dashboard"):
+            st.session_state["pantalla"] = "dashboard"
+
+if "pantalla" not in st.session_state:
+    st.session_state["pantalla"] = "dashboard"
+
+if st.session_state["pantalla"] == "dashboard":
+    mostrar_dashboard()
+
+elif st.session_state["pantalla"] == "Solar":
+    juego_solar()
+
 
 
 
