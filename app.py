@@ -15,9 +15,11 @@ st.header("EcoAprende - Dashboard")
 st.write(f"Progreso general: {Juegos_completados} / {Juegos_totales}")
 
 st.subheader("Lecciones disponibles:")
-          
-if st.button(leccion):
-            st.session_state["pantalla_actual"] = leccion
+
+ for juego in progreso.keys():
+           if st.button(juego):
+                     st.session_state["pantalla_actual"]=juego
+
 
 
 
