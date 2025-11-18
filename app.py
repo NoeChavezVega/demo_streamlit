@@ -1,9 +1,6 @@
 import streamlit as st
 st.title("EcoAprende 🌱")
 
-# ---------------------------------------------------
-#                 PROGRESO DE LOS JUEGOS
-# ---------------------------------------------------
 progreso = {
     "Solar": {"completado": False, "puntaje": 0},
     "Eolica": {"completado": False, "puntaje": 0},
@@ -13,13 +10,9 @@ progreso = {
 
 total_juegos = len(progreso)
 
-
-# ---------------------------------------------------
-#                   DASHBOARD
-# ---------------------------------------------------
+# -------------------- DASHBOARD --------------------
 def mostrar_dashboard():
     st.header("🌱 EcoAprende - Dashboard de Juegos")
-    
     juegos_completados = sum(1 for data in progreso.values() if data["completado"])
     st.write(f"Progreso general: **{juegos_completados}/{total_juegos}** juegos completados")
 
@@ -28,12 +21,10 @@ def mostrar_dashboard():
     for juego in progreso.keys():
         if st.button(juego, key=f"boton_{juego}"):
             st.session_state["pantalla"] = juego
+            st.session_state["resultado_listo"] = False
             st.rerun()
 
-
-# ---------------------------------------------------
-#                  JUEGO: SOLAR
-# ---------------------------------------------------
+# --------------------- JUEGO SOLAR ---------------------
 def juego_solar():
     st.title("🌞 Juego: Energía Solar")
     st.write("Responde las preguntas para ganar puntos:")
@@ -50,6 +41,7 @@ def juego_solar():
         key="solar_p2"
     )
 
+    # Cuando el usuario envía respuestas
     if st.button("Enviar respuestas", key="enviar_respuestas_solar"):
         puntaje = 0
         if p1 == "Solar Fotovoltaica":
@@ -60,6 +52,14 @@ def juego_solar():
         progreso["Solar"]["completado"] = True
         progreso["Solar"]["puntaje"] = puntaje
 
+        st.session_state["puntaje_solar"] = puntaje
+        st.session_state["resultado_listo"] = True
+        st.rerun()
+
+    # ---------- MOSTRAR RESULTADO (fuera del botón) ----------
+    if st.session_state.get("resultado_listo", False):
+        puntaje = st.session_state["puntaje_solar"]
+
         st.success(f"Juego completado. Ganaste {puntaje} puntos.")
         st.balloons()
 
@@ -67,18 +67,15 @@ def juego_solar():
             st.session_state["pantalla"] = "dashboard"
             st.rerun()
 
-
-# ---------------------------------------------------
-#          CONTROL DE PANTALLAS (IMPORTANTE)
-# ---------------------------------------------------
+# ---------------- CONTROL DE PANTALLAS ----------------
 if "pantalla" not in st.session_state:
     st.session_state["pantalla"] = "dashboard"
 
 if st.session_state["pantalla"] == "dashboard":
     mostrar_dashboard()
-
 elif st.session_state["pantalla"] == "Solar":
     juego_solar()
+
 
 
 
