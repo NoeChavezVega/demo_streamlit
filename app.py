@@ -57,7 +57,26 @@ if st.session_state["pantalla"] == "dashboard":
 
 elif st.session_state["pantalla"] == "Solar":
     juego_solar()
+progreso["Solar"]["completado"] = True
+progreso["Solar"]["puntaje"] = puntaje
 
+st.success(f"Juego completado. Ganaste {puntaje} puntos.")
+st.balloons()
+
+# Botón para regresar al dashboard (solo una vez)
+if st.button("Volver al Dashboard"):
+    st.session_state["pantalla"] = "dashboard"
+    st.rerun()
+
+# Control de pantallas
+if "pantalla" not in st.session_state:
+    st.session_state["pantalla"] = "dashboard"
+
+if st.session_state["pantalla"] == "dashboard":
+    mostrar_dashboard()
+
+elif st.session_state["pantalla"] == "Solar":
+    juego_solar()
 
 
 
