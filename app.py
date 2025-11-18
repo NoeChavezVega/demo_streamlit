@@ -14,9 +14,9 @@ def mostrar_dashboard():
     Juegos_completados = sum(1 for data in progreso.values() if data["Hecho"])
 
     st.header("EcoAprende - Dashboard")
-    st.write(f"Progreso general: {Juegos_completados} / {Juegos_totales}")
+    st.write(f"Progreso general: {Juegos_completados} / {Juegos_totales} Juegos")
 
-    st.subheader("Lecciones disponibles:")
+    st.subheader("Juegos disponibles:")
 
     for juego in progreso.keys():
         if st.button(juego):
