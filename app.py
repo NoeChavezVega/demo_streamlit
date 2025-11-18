@@ -24,9 +24,6 @@ total_juegos = len(progreso)
 def mostrar_dashboard():
     st.header("🌱 EcoAprende - Dashboard de Juegos")
 
-    juegos_completados = sum(1 for data in progreso.values() if data["completado"])
-    st.write(f"Progreso general: **{juegos_completados}/{total_juegos}** juegos completados")
-
     st.subheader("Selecciona un juego:")
 
     for juego in progreso.keys():
