@@ -16,8 +16,6 @@ progreso = {
     "Biomasa": {"completado": False, "puntaje": 0},
 }
 
-total_juegos = len(progreso)
-
 # ---------------------------
 #      DASHBOARD SIMPLE
 # ---------------------------
@@ -26,8 +24,10 @@ def mostrar_dashboard():
 
     st.subheader("Selecciona un juego:")
 
-    for juego in progreso.keys():
-        if st.button(juego):
+    # Mostrar cada juego con ✔️ si ya está completo
+    for juego, data in progreso.items():
+        nombre_mostrar = f"{juego} {'✔️' if data['completado'] else ''}"
+        if st.button(nombre_mostrar):
             st.session_state["pantalla"] = juego
 
 # ---------------------------
