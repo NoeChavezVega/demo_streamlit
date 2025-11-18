@@ -1,7 +1,7 @@
 import streamlit as st
 st.title("⚡EcoAprende🌱")
-progreso = {
-    "Solar": {"completado": False, "puntaje": 0},
-    "Eolica": {"completado": False, "puntaje": 0},
-    "Hidraulica": {"completado": False, "puntaje": 0},
-    "Biomasa": {"completado": False, "puntaje": 0},}
+
+progreso={"Energia Solar":{"Echo": False, "Puntaje":0},
+          "Energia Eolica":{"Echo": False,"Puntaje":0},
+          "Energia Hidraulica":{"Echo": False,"Puntaje":0},
+          "Energia por Biomasa":{"Echo": False,"Puntaje":0},}
