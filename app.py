@@ -21,10 +21,8 @@ progreso = {
 # ---------------------------
 def mostrar_dashboard():
     st.header("🌱 EcoAprende - Dashboard de Juegos")
-
     st.subheader("Selecciona un juego:")
 
-    # Mostrar cada juego con ✔️ si ya está completo
     for juego, data in progreso.items():
         nombre_mostrar = f"{juego} {'✔️' if data['completado'] else ''}"
         if st.button(nombre_mostrar):
@@ -35,8 +33,6 @@ def mostrar_dashboard():
 # ---------------------------
 def juego_solar():
     st.title("🌞 Juego: Energía Solar")
-
-    st.write("Responde las preguntas para ganar puntos:")
 
     p1 = st.radio(
         "¿Qué energía solar genera electricidad?",
@@ -72,6 +68,6 @@ if "pantalla" not in st.session_state:
 
 if st.session_state["pantalla"] == "dashboard":
     mostrar_dashboard()
-
 elif st.session_state["pantalla"] == "Solar":
     juego_solar()
+
